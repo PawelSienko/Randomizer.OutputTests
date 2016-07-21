@@ -12,7 +12,8 @@ if(-Not(Test-Path $folderPath))
 Write-Host "Tests starting ...."
 if(-Not(Test-Path $teamCityTestFullPath))
 {
-     throw [System.IO.FileNotFoundException] $teamCityTestFullPath
+    Write-Error "Team city path $teamCityTestFullPath doesnnot exists."
+     [System.Environment]::Exit(-1)
 }
 
 Invoke-Expression $teamCityTestFullPath
