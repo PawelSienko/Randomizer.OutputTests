@@ -12,10 +12,10 @@ if(-Not(Test-Path $folderPath))
 Write-Host "Tests starting ...."
 if(-Not(Test-Path $teamCityTestFullPath))
 {
-     throw [System.IO.FileNotFoundException] "$teamCityTestFullPath not found"
+     throw [System.IO.FileNotFoundException] $teamCityTestFullPath
 }
 
 Invoke-Expression $teamCityTestFullPath
 
-Write-Host "Tests finsihed"
+Write-Host "Tests finished"
 
