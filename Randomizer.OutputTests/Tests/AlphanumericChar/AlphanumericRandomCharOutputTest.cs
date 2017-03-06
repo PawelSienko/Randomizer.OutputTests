@@ -10,21 +10,19 @@ namespace Randomizer.OutputTests.Tests.AlphanumericChar
             : base(randomCharacter, fileLogger)
         {
         }
-
-        public override void PerformTest(object min = null, object max = null)
+        
+        public override void PerformTest(params char[] parameters)
         {
-            base.PerformTest(min, max);
-
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 char randomValue = randomCharacter.GenerateValue();
                 var randomArrayValues = new string(new[] { randomValue });
                 if (randomArrayValues.Any(char.IsLetter) == false && randomArrayValues.Any(char.IsDigit) == false)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

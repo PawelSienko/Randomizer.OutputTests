@@ -1,28 +1,34 @@
 ﻿using System.Globalization;
+using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.DateTime
 {
-    public class DateTimeNegativeValueOutputTest : DateTimeOutputTest
+    public class DateTimeNegativeValueOutputTest : OutputTestBase<System.DateTime>
     {
-        public DateTimeNegativeValueOutputTest(IRandomDateTime randomDateTime, ILogger logger)
-            : base(randomDateTime, logger)
-        {
-        }
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomDateTime randomDateTime;
 
-        public override void PerformTest(object min = null, object max = null)
+        public DateTimeNegativeValueOutputTest(IRandomDateTime randomDateTime, ILogger logger)
+            : base(logger)
         {
-            base.PerformTest(min,max);
+            Validator.ValidateNull(randomDateTime);
+            this.randomDateTime = randomDateTime;
+        }
+        
+        public override void PerformTest(params System.DateTime[] parameters)
+        {
 
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 System.DateTime randomValue = randomDateTime.GenerateNegativeValue();
-                if (randomValue > System.DateTime.Now)
+                if (randomValue < System.DateTime.Now)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

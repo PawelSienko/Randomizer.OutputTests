@@ -1,28 +1,33 @@
 ﻿using System.Globalization;
+using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Double
 {
-    public class DoubleNegativeValueOutputTest : DoubleOutputTest
+    public class DoubleNegativeValueOutputTest : OutputTestBase<double>
     {
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomDouble randomDouble;
+
         public DoubleNegativeValueOutputTest(IRandomDouble randomDouble, ILogger logger)
-            : base(randomDouble, logger)
+            : base(logger)
         {
+            Validator.ValidateNull(randomDouble);
+            this.randomDouble = randomDouble;
         }
-
-        public override void PerformTest(object min = null, object max = null)
+        
+        public override void PerformTest(params double[] parameters)
         {
-            base.PerformTest(min, max);
-
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 double randomValue = randomDouble.GenerateNegativeValue();
                 if (randomValue > 0)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

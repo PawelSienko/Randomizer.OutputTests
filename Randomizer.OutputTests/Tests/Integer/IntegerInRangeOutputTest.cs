@@ -1,32 +1,35 @@
 ﻿using System.Globalization;
+using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Integer
 {
-    public class IntegerInRangeOutputTest : IntegerOutputTest
+    public class IntegerInRangeOutputTest : OutputTestBase<int>
     {
-        public IntegerInRangeOutputTest(IRandomInteger randomInteger, ILogger fileLogger)
-            : base(randomInteger, fileLogger)
+        private IRandomInteger randomInteger;
+        public IntegerInRangeOutputTest(IRandomInteger randomInteger, ILogger logger)
+            : base(logger)
         {
+            Validator.ValidateNull(randomInteger);
+            this.randomInteger = randomInteger;
         }
-        public override void PerformTest(object min = null, object max = null)
+        
+        public override void PerformTest(params int[] parameters)
         {
-            base.PerformTest(min,max);
+            int minValue = parameters[0];
 
-            // ReSharper disable once PossibleNullReferenceException
-            int minValue = (int)min;
-            // ReSharper disable once PossibleNullReferenceException
-            int maxValue = (int)max;
+            int maxValue = parameters[1];
 
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 int randomValue = randomInteger.GenerateValue(minValue, maxValue);
                 if (randomValue > maxValue || randomValue < minValue)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

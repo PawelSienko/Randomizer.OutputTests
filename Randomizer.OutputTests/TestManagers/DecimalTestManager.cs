@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.TestManagers
 {
-    public class DecimalTestManager : TestManagerBase
+    public class DecimalTestManager : TestManagerBase<decimal>
     {
-        public DecimalTestManager(IEnumerable<OutputTestBase> outputTests, int executionTimes = 0) 
+        public DecimalTestManager(IEnumerable<OutputTestBase<decimal>> outputTests, int executionTimes = 0) 
             : base(executionTimes)
         {
-            this.executionTimes = executionTimes;
+            this.ExecutionTimes = executionTimes;
             base.AddExecutable(outputTests.ToList());
         }
     }

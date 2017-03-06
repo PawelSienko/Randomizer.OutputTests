@@ -1,30 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Common.Core.Validation;
 using Randomizer.Interfaces.ReferenceTypes;
-using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.AlphanumericString
 {
-    public class AlphanumericStringOutputTest : OutputTestBase
+    public abstract class AlphanumericStringOutputTest : OutputTestBase<string>
     {
-        // ReSharper disable once InconsistentNaming
-        protected IRandomAlphanumericString randomAlphanumericString;
+        protected readonly IRandomAlphanumericString RandomAlphanumericString;
 
-        public AlphanumericStringOutputTest(IRandomAlphanumericString randomAlphanumericString, ILogger fileLogger)
+        protected AlphanumericStringOutputTest(IRandomAlphanumericString randomAlphanumericString, ILogger logger)
+            : base(logger)
         {
             Validator.ValidateNull(randomAlphanumericString);
-            Validator.ValidateNull(fileLogger);
-            this.randomAlphanumericString = randomAlphanumericString;
-            FileLogger = fileLogger;
+            RandomAlphanumericString = randomAlphanumericString;
         }
-
-        public override void PerformTest(object min = null, object max = null)
-        {
-            
-        }
-
+        
         protected bool IsLetterOrDigit(string randomValue)
         {
             char[] randomValueAsArray = randomValue.ToCharArray();

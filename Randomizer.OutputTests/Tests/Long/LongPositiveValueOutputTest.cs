@@ -1,27 +1,30 @@
 ﻿using System.Globalization;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Long
 {
-    public class LongPositiveValueOutputTest : LongOutputTest
+    public class LongPositiveValueOutputTest : OutputTestBase<long>
     {
-        public LongPositiveValueOutputTest(IRandomLong randomLong, ILogger fileLogger)
-            : base(randomLong, fileLogger)
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomLong randomLong;
+        public LongPositiveValueOutputTest(IRandomLong randomLong, ILogger logger)
+            : base(logger)
         {
+            this.randomLong = randomLong;
         }
-        public override void PerformTest(object min = null, object max = null)
-        {
-            base.PerformTest(min, max);
 
+        public override void PerformTest(params long[] parameters)
+        {
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 long randomValue = randomLong.GeneratePositiveValue();
                 if (randomValue < 0)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

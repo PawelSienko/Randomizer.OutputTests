@@ -6,26 +6,26 @@ namespace Randomizer.OutputTests.Tests.AlphanumericString
 {
     public class AlphanumericStringLowercaseOutputTest : AlphanumericStringOutputTest
     {
-        public AlphanumericStringLowercaseOutputTest(IRandomAlphanumericString randomAlphanumericString, ILogger fileLogger)
-            : base(randomAlphanumericString, fileLogger)
+        public AlphanumericStringLowercaseOutputTest(IRandomAlphanumericString randomAlphanumericString, ILogger logger)
+            : base(randomAlphanumericString,logger)
         {
         }
-
-        public override void PerformTest(object min = null, object max = null)
+        
+        public override void PerformTest(params string[] parameters)
         {
             for (int i = 0; i < ExecutionTimes; i++)
             {
-                string randomValue = randomAlphanumericString.GenerateLowerCaseValue(100);
+                string randomValue = RandomAlphanumericString.GenerateLowerCaseValue(100);
                 if (string.IsNullOrEmpty(randomValue))
                 {
-                    wrongResults.Add("NULL");
+                    WrongResults.Add("NULL");
                 }
                 else if (randomValue.Any(char.IsUpper) || IsLetterOrDigit(randomValue) == false)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

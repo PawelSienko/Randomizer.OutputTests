@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.TestManagers
 {
-    public class ShortTestManager : TestManagerBase
+    public class ShortTestManager : TestManagerBase<short>
     {
-        public ShortTestManager(IEnumerable<OutputTestBase> outputTests, int executionTimes = 0) 
+        public ShortTestManager(IEnumerable<OutputTestBase<short>> outputTests, int executionTimes = 0) 
             : base(executionTimes)
         {
-            this.executionTimes = executionTimes;
+            this.ExecutionTimes = executionTimes;
             base.AddExecutable(outputTests.ToList());
         }
     }

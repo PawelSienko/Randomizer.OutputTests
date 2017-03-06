@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Randomizer.OutputTests</RootNamespace>
     <AssemblyName>Randomizer.OutputTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -35,10 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Core, Version=1.1.82.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Core.Net.Framework.1.0.82\lib\net46\Common.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -55,10 +51,6 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Randomizer, Version=2.0.86.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Randomizer.NET.2.0.120\lib\net46\Randomizer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -72,7 +64,6 @@
     <Compile Include="ConsoleManager.cs" />
     <Compile Include="IConsoleManager.cs" />
     <Compile Include="ILogger.cs" />
-    <Compile Include="IOutpuTest.cs" />
     <Compile Include="FileLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,44 +76,38 @@
     <Compile Include="TestManagers\FloatTestManager.cs" />
     <Compile Include="TestManagers\IntegerTestManager.cs" />
     <Compile Include="TestManagers\ITestManager.cs" />
-    <Compile Include="TestManagerBase.cs" />
+    <Compile Include="Base\TestManagerBase.cs" />
     <Compile Include="TestManagers\ShortTestManager.cs" />
     <Compile Include="Tests\AlphanumericChar\AlphanumericCharOutputTest.cs" />
     <Compile Include="Tests\AlphanumericChar\AlphanumericCharInRangeOutputTest.cs" />
     <Compile Include="Tests\AlphanumericChar\AlphanumericRandomCharOutputTest.cs" />
     <Compile Include="Tests\AlphanumericString\AlphanumericStringDefaultLengthOutputTest.cs" />
+    <Compile Include="Tests\AlphanumericString\AlphanumericStringExcludedOutputTest.cs" />
+    <Compile Include="Tests\AlphanumericString\AlphanumericStringOutputTest.cs" />
     <Compile Include="Tests\AlphanumericString\AlphanumericStringUppercaseOutputTest.cs" />
     <Compile Include="Tests\AlphanumericString\AlphanumericStringLowercaseOutputTest.cs" />
     <Compile Include="Tests\AlphanumericString\AlphanumericStringFixedLengthOutputTest.cs" />
-    <Compile Include="Tests\AlphanumericString\AlphanumericStringOutputTest.cs" />
     <Compile Include="Tests\DateTime\DateTimeInRangeOutputTest.cs" />
+    <Compile Include="Tests\DateTime\DateTimePositiveValueOutputTest.cs" />
     <Compile Include="Tests\DateTime\DateTimeNegativeValueOutputTest.cs" />
-    <Compile Include="Tests\DateTime\DateTimeOutputTest.cs" />
-    <Compile Include="Tests\DateTime\DecimalPositiveValueOutputTest.cs" />
     <Compile Include="Tests\Decimal\DecimalInRangeOutputTest.cs" />
     <Compile Include="Tests\Decimal\DecimalNegativeValueOutputTest.cs" />
-    <Compile Include="Tests\Decimal\DecimalOutputTest.cs" />
     <Compile Include="Tests\Decimal\DecimalPositiveValueOutputTest.cs" />
     <Compile Include="Tests\Double\DoubleInRangeOutputTest.cs" />
     <Compile Include="Tests\Double\DoubleNegativeValueOutputTest.cs" />
-    <Compile Include="Tests\Double\DoubleOutputTest.cs" />
     <Compile Include="Tests\Double\DoublePositiveValueOutputTest.cs" />
     <Compile Include="Tests\Float\FloatInRangeOutputTest.cs" />
-    <Compile Include="OutputTestBase.cs" />
+    <Compile Include="Base\OutputTestBase.cs" />
     <Compile Include="Tests\Float\FloatNegativeValueOutputTest.cs" />
-    <Compile Include="Tests\Float\FloatOutputTest.cs" />
     <Compile Include="Tests\Float\FloatPositiveValueOutputTest.cs" />
-    <Compile Include="Tests\Integer\IntegerOutputTest.cs" />
     <Compile Include="Tests\Integer\IntegerNegativeValueOutputTest.cs" />
     <Compile Include="Tests\Integer\IntegerPositiveValueOutputTest.cs" />
     <Compile Include="Tests\Integer\IntegerInRangeOutputTest.cs" />
     <Compile Include="Tests\Long\LongInRangeOutputTest.cs" />
     <Compile Include="Tests\Long\LongNegativeValueOutputTest.cs" />
     <Compile Include="Tests\Long\LongPositiveValueOutputTest.cs" />
-    <Compile Include="Tests\Long\LongOutputTest.cs" />
     <Compile Include="Tests\Short\ShortInRangeOutputTest.cs" />
     <Compile Include="Tests\Short\ShortNegativeValueOutputTest.cs" />
-    <Compile Include="Tests\Short\ShortOutputTest.cs" />
     <Compile Include="Tests\Short\ShortPositiveValueOutputTest.cs" />
     <Compile Include="Unity\UnityConfiguration.cs" />
   </ItemGroup>
@@ -130,7 +115,16 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common.Core\Common.Core\Common.Core.csproj">
+      <Project>{5a14f7ac-1b58-4645-9cac-34c114006486}</Project>
+      <Name>Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Randomizer.NET\Randomizer\Randomizer.csproj">
+      <Project>{447730f2-2210-4747-a023-753fc4c1b712}</Project>
+      <Name>Randomizer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

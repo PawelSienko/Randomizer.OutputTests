@@ -1,37 +1,22 @@
 ﻿using System.Globalization;
+using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.DateTime
 {
-    public class DateTimeInRangeOutputTest : DateTimeOutputTest
+    public class DateTimeInRangeOutputTest : OutputTestBase<System.DateTime>
     {
-        public DateTimeInRangeOutputTest(IRandomDateTime randomDateTime, ILogger fileLogger)
-            : base(randomDateTime, fileLogger)
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomDateTime randomDateTime;
+
+        public DateTimeInRangeOutputTest(IRandomDateTime randomDateTime, ILogger logger)
+            : base(logger)
         {
+            Validator.ValidateNull(randomDateTime);
+            this.randomDateTime = randomDateTime;
         }
-
-        public override void PerformTest(object min = null, object max = null)
-        {
-            base.PerformTest(min, max);
-
-            // ReSharper disable once PossibleNullReferenceException
-            System.DateTime minValue = (System.DateTime)min;
-            // ReSharper disable once PossibleNullReferenceException
-            System.DateTime maxValue = (System.DateTime)max;
-
-            for (int i = 0; i < ExecutionTimes; i++)
-            {
-                System.DateTime randomValue = randomDateTime.GenerateValue(minValue, maxValue);
-
-                // very specific condition :(
-                if ((randomValue > maxValue || randomValue < minValue) && IsDifferenceonlyInMilliseconds(minValue, maxValue, randomValue) == false)
-                {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
-                }
-            }
-            FileLogger.LogResult(wrongResults);
-        }
-
+        
         private static bool IsDifferenceonlyInMilliseconds(System.DateTime minValue, System.DateTime maxValue, System.DateTime randomValue)
         {
             return IsSpecificCondition(minValue, randomValue) || IsSpecificCondition(maxValue, randomValue);
@@ -47,6 +32,27 @@ namespace Randomizer.OutputTests.Tests.DateTime
             }
 
             return false;
+        }
+
+        public override void PerformTest(params System.DateTime[] parameters)
+        {
+            ValidateConfitions(parameters);
+            
+            System.DateTime minValue = parameters[0];
+            
+            System.DateTime maxValue = parameters[1];
+
+            for (int i = 0; i < ExecutionTimes; i++)
+            {
+                System.DateTime randomValue = randomDateTime.GenerateValue(minValue, maxValue);
+
+                // very specific condition :(
+                if ((randomValue > maxValue || randomValue < minValue) && IsDifferenceonlyInMilliseconds(minValue, maxValue, randomValue) == false)
+                {
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

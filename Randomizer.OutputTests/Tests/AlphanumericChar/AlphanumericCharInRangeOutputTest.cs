@@ -9,14 +9,13 @@ namespace Randomizer.OutputTests.Tests.AlphanumericChar
         {
         }
 
-        public override void PerformTest(object min = null, object max = null)
+        public override void PerformTest(params char[] parameters)
         {
-            base.PerformTest(min, max);
-
-            // ReSharper disable once PossibleNullReferenceException
-            char minValue = (char)min;
-            // ReSharper disable once PossibleNullReferenceException
-            char maxValue = (char)max;
+            ValidateConfitions(parameters);
+            
+            char minValue = parameters[0];
+            
+            char maxValue = parameters[1];
 
             int minValueIndex = Consts.AlphanumericCharacters.IndexOf(minValue);
             int maxValueIndex = Consts.AlphanumericCharacters.IndexOf(maxValue);
@@ -25,13 +24,13 @@ namespace Randomizer.OutputTests.Tests.AlphanumericChar
             {
                 char randomValue = randomCharacter.GenerateValue(minValue, maxValue);
                 int indexOfRandomValue = Consts.AlphanumericCharacters.IndexOf(randomValue);
-                
+
                 if (indexOfRandomValue < minValueIndex || indexOfRandomValue > maxValueIndex)
                 {
-                    wrongResults.Add(Consts.AlphanumericCharacters[indexOfRandomValue].ToString());
+                    WrongResults.Add(Consts.AlphanumericCharacters[indexOfRandomValue].ToString());
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

@@ -1,28 +1,30 @@
 ﻿using System.Globalization;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Float
 {
-    public class FloatNegativeValueOutputTest : FloatOutputTest
+    public class FloatNegativeValueOutputTest : OutputTestBase<float>
     {
+        private readonly IRandomFloat randomFloat;
+
         public FloatNegativeValueOutputTest(IRandomFloat randomFloat, ILogger logger)
-            : base(randomFloat, logger)
+            : base(logger)
         {
+            this.randomFloat = randomFloat;
         }
 
-        public override void PerformTest(object min = null, object max = null)
+        public override void PerformTest(params float[] parameters)
         {
-            base.PerformTest(min,max);
-
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 float randomValue = randomFloat.GenerateNegativeValue();
                 if (randomValue > 0)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

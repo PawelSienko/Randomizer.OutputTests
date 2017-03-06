@@ -1,33 +1,37 @@
 ﻿using System.Globalization;
+using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Double
 {
-    public class DoubleInRangeOutputTest : DoubleOutputTest
+    public class DoubleInRangeOutputTest : OutputTestBase<double>
     {
-        public DoubleInRangeOutputTest(IRandomDouble randomDecimal, ILogger fileLogger)
-            : base(randomDecimal, fileLogger)
+        private IRandomDouble randomDouble;
+        public DoubleInRangeOutputTest(IRandomDouble randomDouble, ILogger logger)
+            : base(logger)
         {
+            Validator.ValidateNull(randomDouble);
+            this.randomDouble = randomDouble;
         }
-
-        public override void PerformTest(object min = null, object max = null)
+        
+        public override void PerformTest(params double[] parameters)
         {
-            base.PerformTest(min, max);
+            ValidateConfitions(parameters);
 
-            // ReSharper disable once PossibleNullReferenceException
-            double minValue = (double)min;
-            // ReSharper disable once PossibleNullReferenceException
-            double maxValue = (double)max;
+            double minValue = parameters[0];
+
+            double maxValue = parameters[1];
 
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 double randomValue = randomDouble.GenerateValue(minValue, maxValue);
                 if (randomValue > maxValue || randomValue < minValue)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

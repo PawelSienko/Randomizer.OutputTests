@@ -1,31 +1,37 @@
 ﻿using System.Globalization;
+using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Float
 {
-    public class FloatInRangeOutputTest : FloatOutputTest
+    public class FloatInRangeOutputTest : OutputTestBase<float>
     {
-        public FloatInRangeOutputTest(IRandomFloat randomFloat, ILogger fileLogger)
-            : base(randomFloat, fileLogger)
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomFloat randomFloat;
+        public FloatInRangeOutputTest(IRandomFloat randomFloat, ILogger logger)
+            : base(logger)
         {
+            Validator.ValidateNull(randomFloat);
+            this.randomFloat = randomFloat;
         }
 
-        public override void PerformTest(object min = null, object max = null)
+        public override void PerformTest(params float[] parameters)
         {
-            base.PerformTest(min, max);
+            ValidateConfitions(parameters);
+            float minValue = parameters[0];
 
-            float minValue = (float)min;
-            float maxValue = (float)max;
+            float maxValue = parameters[1];
 
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 float randomValue = randomFloat.GenerateValue(minValue, maxValue);
                 if (randomValue > maxValue || randomValue < minValue)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

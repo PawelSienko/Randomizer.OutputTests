@@ -1,33 +1,40 @@
 ﻿using System.Globalization;
+using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Decimal
 {
-    public class DecimalInRangeOutputTest : DecimalOutputTest
+    public class DecimalInRangeOutputTest : OutputTestBase<decimal>
     {
-        public DecimalInRangeOutputTest(IRandomDecimal randomDecimal, ILogger fileLogger)
-            : base(randomDecimal, fileLogger)
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomDecimal randomDecimal;
+
+        public DecimalInRangeOutputTest(IRandomDecimal randomDecimal, ILogger logger)
+            : base(logger)
         {
+            Validator.ValidateNull(randomDecimal);
+            this.randomDecimal = randomDecimal;
         }
-
-        public override void PerformTest(object min = null, object max = null)
+        
+        public override void PerformTest(params decimal[] parameters)
         {
-            base.PerformTest(min, max);
+            ValidateConfitions(parameters);
 
             // ReSharper disable once PossibleNullReferenceException
-            decimal minValue = (decimal)min;
+            decimal minValue = parameters[0];
             // ReSharper disable once PossibleNullReferenceException
-            decimal maxValue = (decimal)max;
+            decimal maxValue = parameters[1];
 
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 decimal randomValue = randomDecimal.GenerateValue(minValue, maxValue);
                 if (randomValue > maxValue || randomValue < minValue)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }

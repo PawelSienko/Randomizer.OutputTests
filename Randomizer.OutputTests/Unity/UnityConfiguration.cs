@@ -4,6 +4,7 @@ using Common.Core.Validation;
 using Microsoft.Practices.Unity;
 using Randomizer.Interfaces.ReferenceTypes;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 using Randomizer.OutputTests.TestManagers;
 using Randomizer.OutputTests.Tests.AlphanumericChar;
 using Randomizer.OutputTests.Tests.AlphanumericString;
@@ -19,6 +20,7 @@ namespace Randomizer.OutputTests.Unity
 {
     public static class UnityConfiguration
     {
+        // ReSharper disable once InconsistentNaming
         private static UnityContainer unity;
 
         public static void Configure()
@@ -42,71 +44,70 @@ namespace Randomizer.OutputTests.Unity
             unity.RegisterType<IRandomAlphanumericString, RandomAlphanumericStringGenerator>(new InjectionConstructor());
             unity.RegisterType<IRandomCharacter, RandomAlphanumericCharGenerator>(new InjectionConstructor());
 
-            unity.RegisterType<IOutpuTest, OutputTestBase>();
             unity.RegisterType<IConsoleManager, ConsoleManager>();
 
             RegisterOutputTests();
-            
-            unity.RegisterType<TestManagerBase, FloatTestManager>(new InjectionConstructor(unity.ResolveAll<FloatOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, IntegerTestManager>(new InjectionConstructor(unity.ResolveAll<IntegerOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, DecimalTestManager>(new InjectionConstructor(unity.ResolveAll<DecimalOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, LongTestManager>(new InjectionConstructor(unity.ResolveAll<LongOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, ShortTestManager>(new InjectionConstructor(unity.ResolveAll<ShortOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, DoubleTestManager>(new InjectionConstructor(unity.ResolveAll<DoubleOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, DateTimeTestManager>(new InjectionConstructor(unity.ResolveAll<DateTimeOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, AlphanumericStringTestManager>(new InjectionConstructor(unity.ResolveAll<AlphanumericStringOutputTest>(), executionNumber));
-            unity.RegisterType<TestManagerBase, AlphanumericCharTestManager>(new InjectionConstructor(unity.ResolveAll<AlphanumericCharOutputTest>(), executionNumber));
+
+            unity.RegisterType<TestManagerBase<float>, FloatTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<float>>(), executionNumber));
+            unity.RegisterType<TestManagerBase<int>, IntegerTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<int>>(), executionNumber));
+            unity.RegisterType<TestManagerBase<decimal>, DecimalTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<decimal>>(), executionNumber));
+            unity.RegisterType<TestManagerBase<long>, LongTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<long>>(), executionNumber));
+            unity.RegisterType<TestManagerBase<short>, ShortTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<short>>(), executionNumber));
+            unity.RegisterType<TestManagerBase<double>, DoubleTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<double>>(), executionNumber));
+            unity.RegisterType<TestManagerBase<DateTime>, DateTimeTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<DateTime>>(), executionNumber));
+            unity.RegisterType<TestManagerBase<string>, AlphanumericStringTestManager>(new InjectionConstructor(unity.ResolveAll<AlphanumericStringOutputTest>(), executionNumber));
+            unity.RegisterType<TestManagerBase<char>, AlphanumericCharTestManager>(new InjectionConstructor(unity.ResolveAll<AlphanumericCharOutputTest>(), executionNumber));
         }
 
         private static void RegisterOutputTests()
         {
-            RegisterOutputTest(typeof(FloatOutputTest), typeof(FloatInRangeOutputTest), typeof(IRandomFloat), "floatInRange",
+            RegisterOutputTest(typeof(OutputTestBase<float>), typeof(FloatInRangeOutputTest), typeof(IRandomFloat), "floatInRange",
                 "floatInRangeLog");
-            RegisterOutputTest(typeof(FloatOutputTest), typeof(FloatPositiveValueOutputTest), typeof(IRandomFloat), "floatPositive",
+            RegisterOutputTest(typeof(OutputTestBase<float>), typeof(FloatPositiveValueOutputTest), typeof(IRandomFloat), "floatPositive",
                 "positiveFloatLog");
-            RegisterOutputTest(typeof(FloatOutputTest), typeof(FloatNegativeValueOutputTest), typeof(IRandomFloat), "floatNegative",
+            RegisterOutputTest(typeof(OutputTestBase<float>), typeof(FloatNegativeValueOutputTest), typeof(IRandomFloat), "floatNegative",
                 "negativeFloatLog");
 
-            RegisterOutputTest(typeof(IntegerOutputTest), typeof(IntegerInRangeOutputTest), typeof(IRandomInteger), "integerInRange",
+            RegisterOutputTest(typeof(OutputTestBase<int>), typeof(IntegerInRangeOutputTest), typeof(IRandomInteger), "integerInRange",
                 "intInRangeLog");
-            RegisterOutputTest(typeof(IntegerOutputTest), typeof(IntegerPositiveValueOutputTest), typeof(IRandomInteger), "integerPositive",
+            RegisterOutputTest(typeof(OutputTestBase<int>), typeof(IntegerPositiveValueOutputTest), typeof(IRandomInteger), "integerPositive",
                 "intPositiveLog");
-            RegisterOutputTest(typeof(IntegerOutputTest), typeof(IntegerNegativeValueOutputTest), typeof(IRandomInteger), "integerNegative",
+            RegisterOutputTest(typeof(OutputTestBase<int>), typeof(IntegerNegativeValueOutputTest), typeof(IRandomInteger), "integerNegative",
                 "intNegativeLog");
 
-            RegisterOutputTest(typeof(DecimalOutputTest), typeof(DecimalInRangeOutputTest), typeof(IRandomDecimal), "decimalInRange",
+            RegisterOutputTest(typeof(OutputTestBase<decimal>), typeof(DecimalInRangeOutputTest), typeof(IRandomDecimal), "decimalInRange",
                 "decimalInRangeLog");
-            RegisterOutputTest(typeof(DecimalOutputTest), typeof(DecimalPositiveValueOutputTest), typeof(IRandomDecimal), "decimalPositive",
+            RegisterOutputTest(typeof(OutputTestBase<decimal>), typeof(DecimalPositiveValueOutputTest), typeof(IRandomDecimal), "decimalPositive",
                 "decimalPositiveLog");
-            RegisterOutputTest(typeof(DecimalOutputTest), typeof(DecimalNegativeValueOutputTest), typeof(IRandomDecimal), "decimalNegative",
+            RegisterOutputTest(typeof(OutputTestBase<decimal>), typeof(DecimalNegativeValueOutputTest), typeof(IRandomDecimal), "decimalNegative",
                 "decimalNegativeLog");
 
-            RegisterOutputTest(typeof(LongOutputTest), typeof(LongInRangeOutputTest), typeof(IRandomLong), "longInRangte",
+            RegisterOutputTest(typeof(OutputTestBase<long>), typeof(LongInRangeOutputTest), typeof(IRandomLong), "longInRangte",
                "longInRangeLog");
-            RegisterOutputTest(typeof(LongOutputTest), typeof(LongPositiveValueOutputTest), typeof(IRandomLong), "longPositive",
+            RegisterOutputTest(typeof(OutputTestBase<long>), typeof(LongPositiveValueOutputTest), typeof(IRandomLong), "longPositive",
                 "longPositiveLog");
-            RegisterOutputTest(typeof(LongOutputTest), typeof(LongNegativeValueOutputTest), typeof(IRandomLong), "longNegative",
+            RegisterOutputTest(typeof(OutputTestBase<long>), typeof(LongNegativeValueOutputTest), typeof(IRandomLong), "longNegative",
                 "longNegativeLog");
 
-            RegisterOutputTest(typeof(ShortOutputTest), typeof(ShortInRangeOutputTest), typeof(IRandomShort), "shortInRange",
+            RegisterOutputTest(typeof(OutputTestBase<short>), typeof(ShortInRangeOutputTest), typeof(IRandomShort), "shortInRange",
                "shortInRangeLog");
-            RegisterOutputTest(typeof(ShortOutputTest), typeof(ShortPositiveValueOutputTest), typeof(IRandomShort), "shortPositive",
+            RegisterOutputTest(typeof(OutputTestBase<short>), typeof(ShortPositiveValueOutputTest), typeof(IRandomShort), "shortPositive",
                 "shortPositiveLog");
-            RegisterOutputTest(typeof(ShortOutputTest), typeof(ShortNegativeValueOutputTest), typeof(IRandomShort), "shortNegative",
+            RegisterOutputTest(typeof(OutputTestBase<short>), typeof(ShortNegativeValueOutputTest), typeof(IRandomShort), "shortNegative",
                 "shortNegativeLog");
 
-            RegisterOutputTest(typeof(DoubleOutputTest), typeof(DoubleInRangeOutputTest), typeof(IRandomDouble), "doubleInRange",
-               "shortInRangeLog");
-            RegisterOutputTest(typeof(DoubleOutputTest), typeof(DoublePositiveValueOutputTest), typeof(IRandomDouble), "doublePositive",
-                "shortPositiveLog");
-            RegisterOutputTest(typeof(DoubleOutputTest), typeof(DoubleNegativeValueOutputTest), typeof(IRandomDouble), "doubleNegative",
-                "shortNegativeLog");
+            RegisterOutputTest(typeof(OutputTestBase<double>), typeof(DoubleInRangeOutputTest), typeof(IRandomDouble), "doubleInRange",
+               "doubleInRangeLog");
+            RegisterOutputTest(typeof(OutputTestBase<double>), typeof(DoublePositiveValueOutputTest), typeof(IRandomDouble), "doublePositive",
+                "doublePositiveLog");
+            RegisterOutputTest(typeof(OutputTestBase<double>), typeof(DoubleNegativeValueOutputTest), typeof(IRandomDouble), "doubleNegative",
+                "doubleNegativeLog");
 
-            RegisterOutputTest(typeof(DateTimeOutputTest), typeof(DateTimeInRangeOutputTest), typeof(IRandomDateTime), "dateTimeInRange",
+            RegisterOutputTest(typeof(OutputTestBase<DateTime>), typeof(DateTimeInRangeOutputTest), typeof(IRandomDateTime), "dateTimeInRange",
                "dateTimeInRangeLog");
-            RegisterOutputTest(typeof(DateTimeOutputTest), typeof(DateTimePositiveValueOutputTest), typeof(IRandomDateTime), "dateTimePositive",
+            RegisterOutputTest(typeof(OutputTestBase<DateTime>), typeof(DateTimePositiveValueOutputTest), typeof(IRandomDateTime), "dateTimePositive",
                 "dateTimePositiveLog");
-            RegisterOutputTest(typeof(DateTimeOutputTest), typeof(DateTimeNegativeValueOutputTest), typeof(IRandomDateTime), "dateTimeNegative",
+            RegisterOutputTest(typeof(OutputTestBase<DateTime>), typeof(DateTimeNegativeValueOutputTest), typeof(IRandomDateTime), "dateTimeNegative",
                 "dateTimeNegativeLog");
 
             RegisterOutputTest(typeof(AlphanumericStringOutputTest), typeof(AlphanumericStringDefaultLengthOutputTest), typeof(IRandomAlphanumericString), "alphanumericStringDefault",
@@ -127,8 +128,16 @@ namespace Randomizer.OutputTests.Unity
         private static void RegisterOutputTest(Type baseType, Type concreteType, Type randomInputInterface,
             string registerName, string loggerRegisterName)
         {
-            unity.RegisterType(baseType, concreteType, registerName, new InjectionConstructor(new ResolvedParameter(randomInputInterface)
-                , new ResolvedParameter(typeof(ILogger), loggerRegisterName)));
+            try
+            {
+                unity.RegisterType(baseType, concreteType, registerName,
+                    new InjectionConstructor(new ResolvedParameter(randomInputInterface)
+                        , new ResolvedParameter(typeof(ILogger), loggerRegisterName)));
+            }
+            catch (Exception exp)
+            {
+                
+            }
         }
 
         private static void RegisterLoggers(string basePath)
@@ -175,9 +184,6 @@ namespace Randomizer.OutputTests.Unity
         {
             unity.RegisterType<ILogger, FileLogger>(registerName, new InjectionConstructor(basePath, logFileName));
         }
-        public static UnityContainer Get
-        {
-            get { return unity; }
-        }
+        public static UnityContainer Get => unity;
     }
 }

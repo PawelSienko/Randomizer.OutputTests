@@ -1,27 +1,31 @@
 ﻿using System.Globalization;
 using Randomizer.Interfaces.ValueTypes;
+using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.Short
 {
-    public class ShortPositiveValueOutputTest : ShortOutputTest
+    public class ShortPositiveValueOutputTest : OutputTestBase<short>
     {
-        public ShortPositiveValueOutputTest(IRandomShort randomShort, ILogger fileLogger)
-            : base(randomShort, fileLogger)
-        {
-        }
-        public override void PerformTest(object min = null, object max = null)
-        {
-            base.PerformTest(min, max);
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomShort randomShort;
 
+        public ShortPositiveValueOutputTest(IRandomShort randomShort, ILogger logger)
+            :base(logger)
+        {
+            this.randomShort = randomShort;
+        }
+
+        public override void PerformTest(params short[] parameters)
+        {
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 short randomValue = randomShort.GeneratePositiveValue();
                 if (randomValue < 0)
                 {
-                    wrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            FileLogger.LogResult(wrongResults);
+            fileLogger.LogResult(WrongResults);
         }
     }
 }
