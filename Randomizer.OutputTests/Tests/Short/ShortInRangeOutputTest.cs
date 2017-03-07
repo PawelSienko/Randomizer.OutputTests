@@ -7,6 +7,7 @@ namespace Randomizer.OutputTests.Tests.Short
 {
     public class ShortInRangeOutputTest : OutputTestBase<short>
     {
+        // ReSharper disable once InconsistentNaming
         private readonly IRandomShort randomShort;
 
         public ShortInRangeOutputTest(IRandomShort randomShort, ILogger logger)

@@ -7,7 +7,8 @@ namespace Randomizer.OutputTests.Tests.Integer
 {
     public class IntegerInRangeOutputTest : OutputTestBase<int>
     {
-        private IRandomInteger randomInteger;
+        // ReSharper disable once InconsistentNaming
+        private readonly IRandomInteger randomInteger;
         public IntegerInRangeOutputTest(IRandomInteger randomInteger, ILogger logger)
             : base(logger)
         {
