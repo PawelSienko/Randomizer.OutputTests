@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Configuration;
+using System.IO;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Randomizer.OutputTests.Base;
 using Randomizer.OutputTests.TestManagers;
@@ -18,6 +21,8 @@ namespace Randomizer.OutputTests
         static void Main()
         {
             consoleManager.PrintHeader();
+
+            RemovePreviousErrorFilesIfExist();
             Console.ForegroundColor = ConsoleColor.Green;
             InvokeTests<AlphanumericCharTestManager, char>("Alphanumeric char", 'g', 'w');
             InvokeTests<AlphanumericCharTestManager, char>("Alphanumeric char", 'F', 'L');
@@ -49,9 +54,36 @@ namespace Randomizer.OutputTests
             InvokeTests<DateTimeTestManager, DateTime>("dateTime", DateTime.Now.AddHours(-10), DateTime.Now.AddDays(2));
             InvokeTests<DateTimeTestManager, DateTime>("dateTime", DateTime.Now.AddSeconds(-1), DateTime.Now.AddSeconds(1));
             InvokeTests<AlphanumericStringTestManager, string>("alphanumeric string");
+
             consoleManager.PrintFooter();
+            
+            NotifyIfErrors();
         }
 
+        private static void RemovePreviousErrorFilesIfExist()
+        {
+            var errorLogsPath = GetErrorLogPath();
+            var files = Directory.GetFiles(errorLogsPath);
+            if (files.Any())
+            {
+                Directory.Delete(errorLogsPath, true);
+                Directory.CreateDirectory(errorLogsPath);
+            }
+        }
+
+        private static void NotifyIfErrors()
+        {
+            var errorLogsPath = GetErrorLogPath();
+            if (Directory.GetFiles(errorLogsPath).Any())
+            {
+                consoleManager.PrintErrorMsg("Some errors occured. Please check location " + errorLogsPath);
+            }
+        }
+
+        private static string GetErrorLogPath()
+        {
+            return ConfigurationManager.AppSettings["basePath"];
+        }
         private static void InvokeTests<T, TInput>(string testName, params TInput[] parameters)
             where T : TestManagerBase<TInput>
         {

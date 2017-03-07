@@ -10,6 +10,8 @@ namespace Randomizer.OutputTests
 
         void PrintLine(string line);
 
+        void PrintErrorMsg(string message);
+
         ConsoleColor ForegroundColor { get; set; }
     }
 }

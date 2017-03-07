@@ -24,6 +24,12 @@ namespace Randomizer.OutputTests
             Console.WriteLine(line);;
         }
 
+        public void PrintErrorMsg(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+        }
+
         public ConsoleColor ForegroundColor
         {
             get { return Console.ForegroundColor; }

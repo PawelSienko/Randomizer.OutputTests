@@ -19,11 +19,10 @@ namespace Randomizer.OutputTests.Tests.DateTime
         
         public override void PerformTest(params System.DateTime[] parameters)
         {
-
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 System.DateTime randomValue = randomDateTime.GenerateNegativeValue();
-                if (randomValue < System.DateTime.Now)
+                if (randomValue > System.DateTime.Now)
                 {
                     WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }

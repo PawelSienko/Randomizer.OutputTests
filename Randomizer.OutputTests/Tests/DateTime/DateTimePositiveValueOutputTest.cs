@@ -23,7 +23,7 @@ namespace Randomizer.OutputTests.Tests.DateTime
             for (int i = 0; i < ExecutionTimes; i++)
             {
                 System.DateTime randomValue = randomDateTime.GeneratePositiveValue();
-                if (randomValue > System.DateTime.Now)
+                if (randomValue < System.DateTime.Now)
                 {
                     WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
