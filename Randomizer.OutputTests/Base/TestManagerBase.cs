@@ -22,6 +22,17 @@ namespace Randomizer.OutputTests.Base
             executables = new List<OutputTestBase<TType>>();
         }
 
+        public void SetExecutionTimes(int executionTimes)
+        {
+            if (executables != null)
+            {
+                executables.ForEach(item =>
+                {
+                    item.ExecutionTimes = executionTimes;
+                });
+            }
+        }
+
         public void AddExecutable(IList<OutputTestBase<TType>> executable)
         {
             Validator.ValidateNull(executable);
