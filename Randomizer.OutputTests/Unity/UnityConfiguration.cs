@@ -55,7 +55,9 @@ namespace Randomizer.OutputTests.Unity
             unity.RegisterType<TestManagerBase<short>, ShortTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<short>>(), executionNumber));
             unity.RegisterType<TestManagerBase<double>, DoubleTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<double>>(), executionNumber));
             unity.RegisterType<TestManagerBase<DateTime>, DateTimeTestManager>(new InjectionConstructor(unity.ResolveAll<OutputTestBase<DateTime>>(), executionNumber));
-            unity.RegisterType<TestManagerBase<string>, AlphanumericStringTestManager>(new InjectionConstructor(unity.ResolveAll<AlphanumericStringOutputTest>(), executionNumber));
+            
+            unity.RegisterType<TestManagerBase<object>, AlphanumericStringTestManager>(new InjectionConstructor(unity.ResolveAll<AlphanumericStringOutputTest>(), executionNumber));
+            
             unity.RegisterType<TestManagerBase<char>, AlphanumericCharTestManager>(new InjectionConstructor(unity.ResolveAll<AlphanumericCharOutputTest>(), executionNumber));
         }
 
@@ -118,6 +120,8 @@ namespace Randomizer.OutputTests.Unity
                 "stringLowercaseLog");
             RegisterOutputTest(typeof(AlphanumericStringOutputTest), typeof(AlphanumericStringUppercaseOutputTest), typeof(IRandomAlphanumericString), "alphanumericStringUpper",
                 "stringUppercaseLog");
+            RegisterOutputTest(typeof(AlphanumericStringOutputTest), typeof(AlphanumericStringExcludedOutputTest), typeof(IRandomAlphanumericString), "alphanumericStringExcluded",
+                "stringExcludedLog");
 
             RegisterOutputTest(typeof(AlphanumericCharOutputTest), typeof(AlphanumericRandomCharOutputTest), typeof(IRandomCharacter), "charDefault",
               "randomCharacterLog");
@@ -127,17 +131,10 @@ namespace Randomizer.OutputTests.Unity
 
         private static void RegisterOutputTest(Type baseType, Type concreteType, Type randomInputInterface,
             string registerName, string loggerRegisterName)
-        {
-            try
-            {
+        { 
                 unity.RegisterType(baseType, concreteType, registerName,
                     new InjectionConstructor(new ResolvedParameter(randomInputInterface)
                         , new ResolvedParameter(typeof(ILogger), loggerRegisterName)));
-            }
-            catch (Exception exp)
-            {
-                
-            }
         }
 
         private static void RegisterLoggers(string basePath)
@@ -175,6 +172,7 @@ namespace Randomizer.OutputTests.Unity
             RegisterLogger("stringFixedLengthLog", "stringFixedLength.log", basePath);
             RegisterLogger("stringLowercaseLog", "stringLowercase.log", basePath);
             RegisterLogger("stringUppercaseLog", "stringUppercase.log", basePath);
+            RegisterLogger("stringExcludedLog", "stringExcluded.log", basePath);
 
             RegisterLogger("randomCharacterLog", "randomCharacter.log", basePath);
             RegisterLogger("randomCharacterInRangeLog", "randomCharacter.log", basePath);

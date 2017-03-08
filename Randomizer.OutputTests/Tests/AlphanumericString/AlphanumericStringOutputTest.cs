@@ -6,7 +6,7 @@ using Randomizer.OutputTests.Base;
 
 namespace Randomizer.OutputTests.Tests.AlphanumericString
 {
-    public abstract class AlphanumericStringOutputTest : OutputTestBase<string>
+    public abstract class AlphanumericStringOutputTest : OutputTestBase<object>
     {
         protected readonly IRandomAlphanumericString RandomAlphanumericString;
 

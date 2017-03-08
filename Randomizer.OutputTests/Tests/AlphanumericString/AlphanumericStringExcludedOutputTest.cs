@@ -8,16 +8,25 @@ namespace Randomizer.OutputTests.Tests.AlphanumericString
     public class AlphanumericStringExcludedOutputTest : AlphanumericStringOutputTest
     {
         public AlphanumericStringExcludedOutputTest(IRandomAlphanumericString randomAlphanumericString, ILogger logger)
-            : base(randomAlphanumericString,logger)
+            : base(randomAlphanumericString, logger)
         {
         }
-        
-        public override void PerformTest(params string[] parameters)
+
+        public override void PerformTest(params object[] parameters)
         {
-            var excludedCharacters = new[] { 'f', 'G', '1', 'h' };
+            var length = int.Parse(parameters[0].ToString());
+            var excludedCharacters = new List<char>();
+
+            for (int i = 1; i < parameters.Length; i++)
+            {
+                excludedCharacters.Add((char)parameters[i]);
+            }
+
+            var excludedCharactersArray = excludedCharacters.ToArray();
+
             for (int i = 0; i < ExecutionTimes; i++)
             {
-                string randomValue = RandomAlphanumericString.GenerateValueWithout(40, excludedCharacters);
+                string randomValue = RandomAlphanumericString.GenerateValueWithout(length, excludedCharactersArray);
 
                 if (string.IsNullOrEmpty(randomValue))
                 {
@@ -35,7 +44,8 @@ namespace Randomizer.OutputTests.Tests.AlphanumericString
         private static bool ContainsAnyExcludedCharacter(string randomValue, IList<char> excludedCharacters)
         {
             var randomValueArray = randomValue.ToCharArray();
-            return randomValueArray.Intersect(excludedCharacters).Any();
+            var intersect = randomValueArray.Intersect(excludedCharacters);
+            return intersect.Any();
         }
 
     }

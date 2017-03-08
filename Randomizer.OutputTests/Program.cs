@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using Randomizer.OutputTests.Base;
 using Randomizer.OutputTests.TestManagers;
+using Randomizer.OutputTests.Tests.AlphanumericString;
 using Randomizer.OutputTests.Unity;
 
 namespace Randomizer.OutputTests
@@ -60,7 +61,7 @@ namespace Randomizer.OutputTests
             InvokeTests<DateTimeTestManager, DateTime>("dateTime", executionNumbers, DateTime.MinValue.AddSeconds(1), DateTime.MaxValue.AddSeconds(-1));
             InvokeTests<DateTimeTestManager, DateTime>("dateTime", executionNumbers, DateTime.Now.AddHours(-10), DateTime.Now.AddDays(2));
             InvokeTests<DateTimeTestManager, DateTime>("dateTime", executionNumbers, DateTime.Now.AddSeconds(-1), DateTime.Now.AddSeconds(1));
-            InvokeTests<AlphanumericStringTestManager, string>("alphanumeric string", executionNumbers);
+            InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, 'f', 'Z', '1');
 
             consoleManager.PrintFooter();
 

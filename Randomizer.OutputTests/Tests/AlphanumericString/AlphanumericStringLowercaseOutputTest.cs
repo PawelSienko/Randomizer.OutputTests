@@ -11,7 +11,7 @@ namespace Randomizer.OutputTests.Tests.AlphanumericString
         {
         }
         
-        public override void PerformTest(params string[] parameters)
+        public override void PerformTest(params object[] parameters)
         {
             for (int i = 0; i < ExecutionTimes; i++)
             {
