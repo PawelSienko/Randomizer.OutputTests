@@ -16,8 +16,8 @@ namespace Randomizer.OutputTests.Tests.DateTime
             Validator.ValidateNull(randomDateTime);
             this.randomDateTime = randomDateTime;
         }
-        
-        private static bool IsDifferenceonlyInMilliseconds(System.DateTime minValue, System.DateTime maxValue, System.DateTime randomValue)
+
+        private static bool IsDifferenceOnlyInMilliseconds(System.DateTime minValue, System.DateTime maxValue, System.DateTime randomValue)
         {
             return IsSpecificCondition(minValue, randomValue) || IsSpecificCondition(maxValue, randomValue);
         }
@@ -37,9 +37,9 @@ namespace Randomizer.OutputTests.Tests.DateTime
         public override void PerformTest(params System.DateTime[] parameters)
         {
             ValidateConfitions(parameters);
-            
+
             System.DateTime minValue = parameters[0];
-            
+
             System.DateTime maxValue = parameters[1];
 
             for (int i = 0; i < ExecutionTimes; i++)
@@ -47,12 +47,15 @@ namespace Randomizer.OutputTests.Tests.DateTime
                 System.DateTime randomValue = randomDateTime.GenerateValue(minValue, maxValue);
 
                 // very specific condition :(
-                if ((randomValue > maxValue || randomValue < minValue) && IsDifferenceonlyInMilliseconds(minValue, maxValue, randomValue) == false)
+                if ((randomValue > maxValue || randomValue < minValue) && IsDifferenceOnlyInMilliseconds(minValue, maxValue, randomValue) == false)
                 {
                     WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
             }
-            fileLogger.LogResult(WrongResults);
+            if (WrongResults.Count > 0)
+            {
+                fileLogger.LogResult(WrongResults);
+            }
         }
     }
 }
