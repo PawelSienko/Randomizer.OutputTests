@@ -54,7 +54,7 @@ namespace Randomizer.OutputTests.Tests.DateTime
             }
             if (WrongResults.Count > 0)
             {
-                fileLogger.LogResult(WrongResults);
+                fileLogger.LogResult(WrongResults, minValue.ToString(CultureInfo.InvariantCulture), maxValue.ToString(CultureInfo.InvariantCulture));
             }
         }
     }

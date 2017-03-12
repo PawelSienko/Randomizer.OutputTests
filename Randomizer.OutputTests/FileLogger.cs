@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Common.Core.Validation;
@@ -21,8 +22,13 @@ namespace Randomizer.OutputTests
             fullPath = Path.Combine(basePath, fileName);
         }
 
-        public void LogResult(IEnumerable<string> lines)
+        public void LogResult(IEnumerable<string> lines, string minValue = null, string maxValue = null)
         {
+            if (string.IsNullOrEmpty(minValue) == false && string.IsNullOrEmpty(maxValue) == false)
+            {
+                var minAndMaxValueString = $"Min value - {minValue}, max value - {maxValue}, {Environment.NewLine}";
+                File.AppendAllText(fullPath, minAndMaxValueString);
+            }
             if (lines != null && lines.Any())
             {
                 File.AppendAllLines(fullPath, lines);

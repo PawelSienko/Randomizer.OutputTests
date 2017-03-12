@@ -15,7 +15,7 @@ namespace Randomizer.OutputTests.Tests.Long
             Validator.ValidateNull(randomLong);
             this.randomLong = randomLong;
         }
-        
+
         public override void PerformTest(params long[] parameters)
         {
             for (int i = 0; i < ExecutionTimes; i++)

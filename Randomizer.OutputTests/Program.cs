@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Randomizer.OutputTests.Base;
 using Randomizer.OutputTests.TestManagers;
@@ -58,11 +59,21 @@ namespace Randomizer.OutputTests
             InvokeTests<DoubleTestManager, double>("double", executionNumbers, -1022342D, 11D);
             InvokeTests<DoubleTestManager, double>("double", executionNumbers, -1022342D, -11D);
             InvokeTests<DoubleTestManager, double>("double", executionNumbers, 1022342D, 1123421312D);
-            InvokeTests<DateTimeTestManager, DateTime>("dateTime", executionNumbers, DateTime.MinValue.AddSeconds(1), DateTime.MaxValue.AddSeconds(-1));
-            InvokeTests<DateTimeTestManager, DateTime>("dateTime", executionNumbers, DateTime.Now.AddHours(-10), DateTime.Now.AddDays(2));
-            InvokeTests<DateTimeTestManager, DateTime>("dateTime", executionNumbers, DateTime.Now.AddSeconds(-1), DateTime.Now.AddSeconds(1));
-            InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, 'f', 'Z', '1');
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - milliseconds", executionNumbers, DateTime.Now, DateTime.Now.AddMilliseconds(2));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - seconds", executionNumbers, DateTime.Now, DateTime.Now.AddSeconds(1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - minutes", executionNumbers, DateTime.Now, DateTime.Now.AddMinutes(1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - hours", executionNumbers, DateTime.Now, DateTime.Now.AddHours(1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - days", executionNumbers, DateTime.Now, DateTime.Now.AddDays(1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - months", executionNumbers, DateTime.Now, DateTime.Now.AddMonths(1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - years", executionNumbers, DateTime.Now, DateTime.Now.AddYears(1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - min and max of datetime", executionNumbers, DateTime.MinValue.AddYears(1), DateTime.MaxValue.AddYears(-1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - normal timespan 1", executionNumbers, DateTime.Now.AddYears(-1), DateTime.Now.AddMinutes(45).AddDays(11).AddSeconds(12));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - normal timespan", executionNumbers, DateTime.Now.AddHours(-7), DateTime.Now.AddMinutes(7).AddSeconds(12).AddHours(1));
 
+            InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, 'f', 'Z', '1');
+            InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, 'f', '@', 'B');
+
+            InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, '1', 'q', 'M');
             consoleManager.PrintFooter();
 
             NotifyIfErrors();
@@ -71,11 +82,15 @@ namespace Randomizer.OutputTests
         private static void RemovePreviousErrorFilesIfExist()
         {
             var errorLogsPath = GetErrorLogPath();
-            var files = Directory.GetFiles(errorLogsPath);
-            if (files.Any())
+
+            if (Directory.Exists(errorLogsPath))
             {
-                Directory.Delete(errorLogsPath, true);
-                Directory.CreateDirectory(errorLogsPath);
+                DirectoryInfo directoryInfo = new DirectoryInfo(errorLogsPath);
+                var files = directoryInfo.GetFiles();
+                if (files.Any())
+                {
+                    files.ForEach(file => file.Delete());
+                }
             }
         }
 

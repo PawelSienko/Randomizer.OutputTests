@@ -13,7 +13,7 @@ namespace Randomizer.OutputTests.Tests.Integer
         {
             this.randomInteger = randomInteger;
         }
-        
+
         public override void PerformTest(params int[] parameters)
         {
             for (int i = 0; i < ExecutionTimes; i++)
