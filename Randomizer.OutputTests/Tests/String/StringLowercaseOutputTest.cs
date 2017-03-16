@@ -25,8 +25,8 @@ namespace Randomizer.OutputTests.Tests.String
                 {
                     WrongResults.Add("NULL");
                 }
-                else if (randomValue.Length == fixedLenght || randomValueArray.Any(item => item < Consts.FirstCharacterHex) || randomValueArray.Any(item => item > Consts.LastCharacterHex)
-                    || randomValueArray.Any(char.IsUpper))
+                else if (randomValue.Length != fixedLenght || randomValueArray.Any(item => item < Consts.FirstCharacterHex) || randomValueArray.Any(item => item > Consts.LastCharacterHex)
+                    || randomValueArray.Any(item => char.IsLetter(item) && char.IsUpper(item)))
                 {
                     WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
