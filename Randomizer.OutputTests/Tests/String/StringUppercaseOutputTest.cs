@@ -12,6 +12,7 @@ namespace Randomizer.OutputTests.Tests.String
 
         public override void PerformTest(params object[] parameters)
         {
+            ValidateConfitions(parameters);
             int fixedLenght = int.Parse(parameters[0].ToString());
             for (int i = 0; i < ExecutionTimes; i++)
             {

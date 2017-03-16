@@ -13,6 +13,7 @@ namespace Randomizer.OutputTests.Tests.String
 
         public override void PerformTest(params object[] parameters)
         {
+            ValidateConfitions(parameters);
             int length = int.Parse(parameters[0].ToString());
 
             var excludedCharacters = new List<char>();
