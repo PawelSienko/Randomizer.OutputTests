@@ -74,6 +74,11 @@ namespace Randomizer.OutputTests
             InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, 'f', '@', 'B');
 
             InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, '1', 'q', 'M');
+
+            InvokeTests<StringTestManager, object>("string with exclusions", executionNumbers, 10, '@', '-', 'w');
+
+            InvokeTests<StringTestManager, object>("string with exclusions", executionNumbers, 7, '/', '&', 'a', '1', '$', 'X', '4');
+
             consoleManager.PrintFooter();
 
             NotifyIfErrors();

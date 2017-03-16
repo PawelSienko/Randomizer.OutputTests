@@ -5,9 +5,9 @@ using Randomizer.Interfaces.ReferenceTypes;
 
 namespace Randomizer.OutputTests.Tests.String
 {
-    public class StringExcludedOutputTests : StringOutputTests
+    public class StringExcludedOutputTest : StringOutputTest
     {
-        public StringExcludedOutputTests(IRandomString randomString, ILogger logger) : base(randomString, logger)
+        public StringExcludedOutputTest(IRandomString randomString, ILogger logger) : base(randomString, logger)
         {
         }
 
@@ -32,7 +32,7 @@ namespace Randomizer.OutputTests.Tests.String
                 {
                     WrongResults.Add("NULL");
                 }
-                else if (randomValue.Length != 25 || randomValueArray.Any(item => excludedCharacters.Contains(item)))
+                else if (randomValue.Length != length || randomValueArray.Any(item => excludedCharacters.Contains(item)) || randomValueArray.Any(item => item < Consts.FirstCharacterHex) || randomValueArray.Any(item => (item > Consts.LastCharacterHex)))
                 {
                     WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }

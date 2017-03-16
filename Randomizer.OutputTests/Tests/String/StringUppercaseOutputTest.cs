@@ -4,19 +4,18 @@ using Randomizer.Interfaces.ReferenceTypes;
 
 namespace Randomizer.OutputTests.Tests.String
 {
-    public class StringFixedLengthOutputTests : StringOutputTests
+    public class StringUppercaseOutputTest : StringOutputTest
     {
-        public StringFixedLengthOutputTests(IRandomString randomString, ILogger logger) : base(randomString, logger)
+        public StringUppercaseOutputTest(IRandomString randomString, ILogger logger) : base(randomString, logger)
         {
         }
 
         public override void PerformTest(params object[] parameters)
         {
-            const int FixedLength = 50;
-
+            int fixedLenght = int.Parse(parameters[0].ToString());
             for (int i = 0; i < ExecutionTimes; i++)
             {
-                string randomValue = randomString.GenerateValue(lenght: FixedLength);
+                string randomValue = randomString.GenerateUpperCaseValue(fixedLenght);
 
                 char[] randomValueArray = randomValue.ToCharArray();
 
@@ -24,7 +23,8 @@ namespace Randomizer.OutputTests.Tests.String
                 {
                     WrongResults.Add("NULL");
                 }
-                else if (randomValue.Length == FixedLength || randomValueArray.Any(item => item < Consts.FirstCharacterHex) || randomValueArray.Any(item => item > Consts.LastCharacterHex))
+                else if (randomValue.Length != fixedLenght || randomValueArray.Any(item => item < Consts.FirstCharacterHex) || randomValueArray.Any(item => item > Consts.LastCharacterHex)
+                    || randomValueArray.Any(char.IsLower))
                 {
                     WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
