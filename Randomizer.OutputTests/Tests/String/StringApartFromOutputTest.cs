@@ -5,9 +5,9 @@ using Randomizer.Interfaces.ReferenceTypes;
 
 namespace Randomizer.OutputTests.Tests.String
 {
-    public class StringExcludedOutputTest : StringOutputTest
+    public class StringApartFromOutputTest : StringOutputTest
     {
-        public StringExcludedOutputTest(IRandomString randomString, ILogger logger) : base(randomString, logger)
+        public StringApartFromOutputTest(IRandomString randomString, ILogger logger) : base(randomString, logger)
         {
         }
 
@@ -25,7 +25,7 @@ namespace Randomizer.OutputTests.Tests.String
 
             for (int i = 0; i < ExecutionTimes; i++)
             {
-                string randomValue = randomString.GenerateValueWithout(length, excludedCharacters.ToArray());
+                string randomValue = randomString.GenerateApartFrom(length, excludedCharacters.ToArray());
 
                 char[] randomValueArray = randomValue.ToCharArray();
 
