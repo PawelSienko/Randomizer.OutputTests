@@ -69,6 +69,7 @@ namespace Randomizer.OutputTests
             InvokeTests<DateTimeTestManager, DateTime>("dateTime - min and max of datetime", executionNumbers, DateTime.MinValue.AddYears(1), DateTime.MaxValue.AddYears(-1));
             InvokeTests<DateTimeTestManager, DateTime>("dateTime - normal timespan 1", executionNumbers, DateTime.Now.AddYears(-1), DateTime.Now.AddMinutes(45).AddDays(11).AddSeconds(12));
             InvokeTests<DateTimeTestManager, DateTime>("dateTime - normal timespan", executionNumbers, DateTime.Now.AddHours(-7), DateTime.Now.AddMinutes(7).AddSeconds(12).AddHours(1));
+            InvokeTests<DateTimeTestManager, DateTime>("dateTime - february test cases", executionNumbers);
 
             InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, 'f', 'Z', '1');
             InvokeTests<AlphanumericStringTestManager, object>("alphanumeric string with exclusions", executionNumbers, 40, 'f', '@', 'B');
@@ -82,6 +83,8 @@ namespace Randomizer.OutputTests
             consoleManager.PrintFooter();
 
             NotifyIfErrors();
+
+            Console.ReadLine();
         }
 
         private static void RemovePreviousErrorFilesIfExist()

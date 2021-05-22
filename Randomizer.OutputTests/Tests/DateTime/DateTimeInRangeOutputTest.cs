@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Common.Core.Validation;
 using Randomizer.Interfaces.ValueTypes;
 using Randomizer.OutputTests.Base;
@@ -38,6 +40,42 @@ namespace Randomizer.OutputTests.Tests.DateTime
         {
             ValidateConfitions(parameters);
 
+            if(parameters == null || parameters.Length < 2)
+            {
+                PerformParameterlessTest();
+            }
+            else
+            {
+                System.DateTime minValue = parameters[0];
+
+                System.DateTime maxValue = parameters[1];
+                PerformTestInternal(minValue, maxValue);
+            }
+
+            if (WrongResults.Count > 0)
+            {
+                fileLogger.LogResult(WrongResults);
+            }
+        }
+
+        private void PerformParameterlessTest()
+        {
+            System.DateTime randomValue = default(System.DateTime);
+            for (int i = 0; i < ExecutionTimes; i++)
+            {
+                try
+                {
+                    randomValue = randomDateTime.GenerateValue();
+                }
+                catch(Exception ex)
+                {
+                    WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+        }
+
+        private void PerformTestInternal(params System.DateTime[] parameters)
+        {
             System.DateTime minValue = parameters[0];
 
             System.DateTime maxValue = parameters[1];
@@ -51,10 +89,6 @@ namespace Randomizer.OutputTests.Tests.DateTime
                 {
                     WrongResults.Add(randomValue.ToString(CultureInfo.InvariantCulture));
                 }
-            }
-            if (WrongResults.Count > 0)
-            {
-                fileLogger.LogResult(WrongResults, minValue.ToString(CultureInfo.InvariantCulture), maxValue.ToString(CultureInfo.InvariantCulture));
             }
         }
     }
